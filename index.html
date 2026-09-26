@@ -68,6 +68,16 @@
     .hero-eyebrow, .hero h1, .hero-sub, .hero-location, .hero-actions { opacity: 1; transform: none; }
   }
 
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1.visible { transition-delay: 0.08s; }
+  .reveal-delay-2.visible { transition-delay: 0.16s; }
+  .reveal-delay-3.visible { transition-delay: 0.24s; }
+  .reveal-delay-4.visible { transition-delay: 0.32s; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
   .terminal { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem 1.5rem; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.9; color: var(--muted); margin: 4rem auto; max-width: 1100px; overflow-x: auto; }
   .terminal .prompt { color: var(--amber); }
   .terminal .output { color: #4ADE80; }
@@ -176,6 +186,7 @@
       <a href="https://github.com/DevwithMujeeb" target="_blank" rel="noopener" class="btn btn-primary">GitHub</a>
       <a href="https://www.linkedin.com/in/abdulmujeeb-uthman/" target="_blank" rel="noopener" class="btn btn-secondary">LinkedIn</a>
       <a href="https://devwithmujeeb.hashnode.dev" target="_blank" rel="noopener" class="btn btn-secondary">Writing</a>
+      <a href="resume.pdf" download class="btn btn-primary">Resume</a>
     </div>
   </div>
 </div>
@@ -194,13 +205,13 @@
 <section id="about">
   <span class="section-label">01 / about</span>
   <div class="about-grid">
-    <div class="about-text">
+    <div class="about-text reveal">
       <h2>Security engineering across both sides of the fence</h2>
       <p>I build blue team environments and think like an attacker while doing it. My background in backend engineering means I understand how systems are assembled, which makes it easier to reason about how they fail.</p>
       <p>Currently working through <strong>Expadox Lab Cohort 3</strong>, where I have deployed production-grade SIEM infrastructure, integrated AWS and Azure cloud log ingestion, built a DevSecOps pipeline with automated SOAR response, and led a team across multiple projects.</p>
       <p>My Electrical and Electronics Engineering degree at the University of Ibadan gave me a habit of tracing systems to their failure points before considering them understood. That instinct transfers cleanly to security.</p>
     </div>
-    <div class="about-pillars">
+    <div class="about-pillars reveal reveal-delay-2">
       <div class="pillar">
         <span class="pillar-icon">[ 01 ]</span>
         <h3>Blue Team Operations</h3>
@@ -227,8 +238,8 @@
 
 <section id="projects">
   <span class="section-label">02 / projects</span>
-  <h2>Selected work</h2>
-  <table class="projects-table">
+  <h2 class="reveal">Selected work</h2>
+  <table class="projects-table reveal reveal-delay-1">
     <thead>
       <tr>
         <th style="width:35%">Project</th>
@@ -298,16 +309,16 @@
 
 <section id="focus">
   <span class="section-label">03 / current focus</span>
-  <h2>What I am building toward</h2>
+  <h2 class="reveal">What I am building toward</h2>
   <div class="focus-grid">
-    <ul class="focus-list">
+    <ul class="focus-list reveal">
       <li><strong>SOC Analyst and Security Engineer roles</strong> within 6 to 12 months</li>
       <li><strong>HackTheBox</strong> active labs, machine writeups, CJCA certification track</li>
       <li><strong>Cloud security</strong> AWS and Azure log ingestion, threat detection at scale</li>
       <li><strong>Network security</strong> moving from blue team operations into network-layer offense</li>
       <li><strong>Public documentation</strong> every project writeup on Hashnode and GitHub</li>
     </ul>
-    <div>
+    <div class="reveal reveal-delay-2">
       <p style="font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem;font-family:var(--font-mono)">HackTheBox Academy progress</p>
       <div class="progress-items">
         <div class="progress-item">
@@ -341,6 +352,19 @@
     <a href="https://medium.com/@Devwithmujeeb" target="_blank" rel="noopener">Medium</a>
   </div>
 </footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
