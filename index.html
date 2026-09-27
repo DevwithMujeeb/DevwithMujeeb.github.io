@@ -1,370 +1,1275 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Abdulmujeeb Uthman — Security Engineer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0E0E0F;
-    --surface: #16181C;
-    --surface2: #1E2028;
-    --amber: #F5A623;
-    --amber-dim: rgba(245,166,35,0.12);
-    --blue: #3B82F6;
-    --text: #E8E8E8;
-    --muted: #6B7280;
-    --border: rgba(255,255,255,0.07);
-    --font-head: 'Space Grotesk', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-    box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  *, *::before, *::after { box-sizing: inherit; margin: 0; padding: 0; }
-  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
-  body { background: var(--bg); color: var(--text); font-family: var(--font-head); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-
-  nav { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; background: rgba(14,14,15,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
-  .nav-logo { font-family: var(--font-mono); font-size: 0.82rem; color: var(--amber); }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a { font-size: 0.875rem; color: var(--muted); text-decoration: none; position: relative; padding-bottom: 2px; transition: color 0.2s; }
-  .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--amber); transition: width 0.25s ease; }
-  .nav-links a:hover { color: var(--text); }
-  .nav-links a:hover::after { width: 100%; }
-
-  .hero { min-height: 100vh; display: flex; align-items: center; padding: 8rem 2rem 4rem; max-width: 1100px; margin: 0 auto; }
-  .hero-inner { max-width: 720px; }
-  .hero-eyebrow { font-family: var(--font-mono); font-size: 0.78rem; color: var(--amber); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; opacity: 0; transform: translateY(12px); }
-  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); animation: pulse 2s ease infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  .hero h1 { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1.5rem; opacity: 0; transform: translateY(16px); }
-  .hero h1 span { color: var(--amber); }
-  .hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 560px; line-height: 1.7; margin-bottom: 2rem; opacity: 0; transform: translateY(16px); }
-  .hero-location { font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); margin-bottom: 2.5rem; opacity: 0; transform: translateY(12px); }
-  .cursor { display: inline-block; width: 8px; height: 0.9em; background: var(--amber); vertical-align: middle; margin-left: 4px; animation: blink 1s step-end infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; transform: translateY(12px); }
-  .btn { font-family: var(--font-mono); font-size: 0.82rem; padding: 0.75rem 1.5rem; border-radius: 4px; text-decoration: none; transition: transform 0.18s, box-shadow 0.18s; display: inline-block; }
-  .btn:hover { transform: translateY(-2px); }
-  .btn-primary { background: var(--amber); color: #0E0E0F; font-weight: 600; }
-  .btn-primary:hover { box-shadow: 0 6px 24px rgba(245,166,35,0.3); }
-  .btn-secondary { border: 1px solid var(--border); color: var(--text); background: transparent; }
-  .btn-secondary:hover { border-color: var(--amber); box-shadow: 0 6px 24px rgba(245,166,35,0.1); }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .animate { animation: risein 0.6s ease forwards; }
-    @keyframes risein { to { opacity: 1; transform: translateY(0); } }
-    .d1 { animation-delay: 0.1s; }
-    .d2 { animation-delay: 0.25s; }
-    .d3 { animation-delay: 0.4s; }
-    .d4 { animation-delay: 0.52s; }
-    .d5 { animation-delay: 0.65s; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .hero-eyebrow, .hero h1, .hero-sub, .hero-location, .hero-actions { opacity: 1; transform: none; }
-  }
-
-  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1.visible { transition-delay: 0.08s; }
-  .reveal-delay-2.visible { transition-delay: 0.16s; }
-  .reveal-delay-3.visible { transition-delay: 0.24s; }
-  .reveal-delay-4.visible { transition-delay: 0.32s; }
-  @media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1; transform: none; transition: none; }
-  }
-
-  .terminal { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem 1.5rem; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.9; color: var(--muted); margin: 4rem auto; max-width: 1100px; overflow-x: auto; }
-  .terminal .prompt { color: var(--amber); }
-  .terminal .output { color: #4ADE80; }
-  .terminal .comment { color: #4B5563; }
-
-  section { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; border-top: 1px solid var(--border); }
-  .section-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--amber); margin-bottom: 2.5rem; display: block; }
-  h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.5rem; line-height: 1.2; }
-
-  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
-  .about-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1rem; max-width: 480px; }
-  .about-text p strong { color: var(--text); font-weight: 500; }
-  .about-pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .pillar { background: var(--surface); padding: 1.5rem; transition: background 0.2s; }
-  .pillar:hover { background: var(--surface2); }
-  .pillar-icon { font-family: var(--font-mono); font-size: 0.68rem; color: var(--amber); margin-bottom: 0.75rem; display: block; }
-  .pillar h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
-  .pillar p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
-
-  .projects-table { width: 100%; border-collapse: collapse; }
-  .projects-table thead tr { border-bottom: 1px solid var(--border); }
-  .projects-table th { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); text-align: left; padding: 0 1rem 1rem 0; font-weight: 400; }
-  .projects-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
-  .projects-table tbody tr:hover { background: var(--surface); }
-  .projects-table tbody tr:hover .proj-title { color: var(--amber); text-decoration: underline; }
-  .projects-table tbody tr:hover .tag { background: var(--amber-dim); color: var(--amber); }
-  .projects-table td { padding: 1.25rem 1rem 1.25rem 0; vertical-align: top; }
-  .proj-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.35rem; transition: color 0.15s; }
-  .proj-title a { color: inherit; text-decoration: none; }
-  .proj-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; max-width: 380px; }
-  .proj-type { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
-  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-  .tag { font-family: var(--font-mono); font-size: 0.68rem; padding: 0.2rem 0.55rem; border-radius: 3px; background: var(--surface2); color: var(--muted); transition: background 0.15s, color 0.15s; }
-  .proj-link { font-family: var(--font-mono); font-size: 0.75rem; color: var(--blue); text-decoration: none; white-space: nowrap; }
-  .proj-link:hover { text-decoration: underline; }
-
-  .focus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-  .focus-list { list-style: none; }
-  .focus-list li { padding: 0.9rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: var(--muted); display: flex; align-items: center; gap: 0.75rem; }
-  .focus-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--amber); flex-shrink: 0; }
-  .focus-list li strong { color: var(--text); font-weight: 500; }
-  .progress-items { display: flex; flex-direction: column; gap: 1rem; }
-  .progress-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-bottom: 0.4rem; display: flex; justify-content: space-between; }
-  .progress-label span:last-child { color: var(--amber); }
-  .progress-bar { height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--amber); border-radius: 2px; }
-
-  footer { border-top: 1px solid var(--border); padding: 3rem 2rem; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
-  .footer-note { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
-  .footer-links { display: flex; gap: 1.5rem; }
-  .footer-links a { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); text-decoration: none; position: relative; padding-bottom: 2px; }
-  .footer-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--amber); transition: width 0.2s ease; }
-  .footer-links a:hover { color: var(--text); }
-  .footer-links a:hover::after { width: 100%; }
-
-  @media (max-width: 768px) {
-    nav { padding: 1rem 1.25rem; }
-    .nav-links { gap: 1.25rem; }
-    .hero { padding: 7rem 1.25rem 3rem; }
-    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-    .focus-grid { grid-template-columns: 1fr; gap: 2rem; }
-    section { padding: 3.5rem 1.25rem; }
-    .terminal { margin: 2rem 1.25rem; }
-    .projects-table thead { display: none; }
-    .projects-table td { display: block; padding: 0.4rem 0; }
-    .projects-table tbody tr { display: block; padding: 1.25rem 0; }
-    footer { flex-direction: column; align-items: flex-start; }
-    .proj-type { display: none; }
-  }
-  @media (max-width: 480px) {
-    .nav-links li:nth-child(3), .nav-links li:nth-child(4) { display: none; }
-    .about-pillars { grid-template-columns: 1fr; }
-  }
-</style>
-</head>
-<body>
-
-<nav>
-  <span class="nav-logo">abdulmujeeb.uthman</span>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#focus">Focus</a></li>
-    <li><a href="https://github.com/DevwithMujeeb" target="_blank" rel="noopener">GitHub</a></li>
-  </ul>
-</nav>
-
-<div class="hero">
-  <div class="hero-inner">
-    <div class="hero-eyebrow animate d1">
-      <span class="dot"></span>
-      Security Engineer in the making
-    </div>
-    <h1 class="animate d2">
-      Building systems.<br>
-      <span>Breaking them</span> to understand<br>
-      how to harden the next one.
-    </h1>
-    <p class="hero-sub animate d3">
-      Blue team operations by day, HackTheBox by night. I deploy SIEMs, instrument CI/CD pipelines with security gates, and document everything in public so the work speaks for itself.
-    </p>
-    <p class="hero-location animate d4">
-      Ibadan, Nigeria<span class="cursor"></span>
-    </p>
-    <div class="hero-actions animate d5">
-      <a href="https://github.com/DevwithMujeeb" target="_blank" rel="noopener" class="btn btn-primary">GitHub</a>
-      <a href="https://www.linkedin.com/in/abdulmujeeb-uthman/" target="_blank" rel="noopener" class="btn btn-secondary">LinkedIn</a>
-      <a href="https://devwithmujeeb.hashnode.dev" target="_blank" rel="noopener" class="btn btn-secondary">Writing</a>
-      <a href="resume.pdf" download class="btn btn-primary">Resume</a>
-    </div>
-  </div>
-</div>
-
-<div class="terminal">
-  <div><span class="comment"># Expadox Lab Cohort 3 — live attack detection evidence</span></div>
-  <div><span class="prompt">cyber-vortex@wazuh-server:~$</span> tail -f /var/ossec/logs/alerts/alerts.json | grep "SSH"</div>
-  <div><span class="output">{"rule":{"id":"5710","description":"SSH authentication failed","level":5},"agent":{"name":"40RT3X"}}</span></div>
-  <div><span class="output">{"rule":{"id":"5503","description":"SSH Brute Force attempt","level":10},"data":{"srcip":"10.153.239.40"}}</span></div>
-  <div><span class="prompt">cyber-vortex@wazuh-server:~$</span> cat zap-report.json | jq '.site[0].alerts[] | {name:.alert, risk:.riskdesc}'</div>
-  <div><span class="output">{"name":"Content Security Policy Header Not Set","risk":"Medium (High)"}</span></div>
-  <div><span class="output">{"name":"Cross-Domain Misconfiguration","risk":"Medium (Medium)"}</span></div>
-  <div><span class="prompt">cyber-vortex@wazuh-server:~$</span> <span class="comment"># CRITICAL: Pipeline blocked. 2 medium or higher severity findings detected.</span></div>
-</div>
-
-<section id="about">
-  <span class="section-label">01 / about</span>
-  <div class="about-grid">
-    <div class="about-text reveal">
-      <h2>Security engineering across both sides of the fence</h2>
-      <p>I build blue team environments and think like an attacker while doing it. My background in backend engineering means I understand how systems are assembled, which makes it easier to reason about how they fail.</p>
-      <p>Currently working through <strong>Expadox Lab Cohort 3</strong>, where I have deployed production-grade SIEM infrastructure, integrated AWS and Azure cloud log ingestion, built a DevSecOps pipeline with automated SOAR response, and led a team across multiple projects.</p>
-      <p>My Electrical and Electronics Engineering degree at the University of Ibadan gave me a habit of tracing systems to their failure points before considering them understood. That instinct transfers cleanly to security.</p>
-    </div>
-    <div class="about-pillars reveal reveal-delay-2">
-      <div class="pillar">
-        <span class="pillar-icon">[ 01 ]</span>
-        <h3>Blue Team Operations</h3>
-        <p>SIEM deployment, threat detection, cloud log ingestion, incident response playbooks</p>
-      </div>
-      <div class="pillar">
-        <span class="pillar-icon">[ 02 ]</span>
-        <h3>Offensive Security</h3>
-        <p>HackTheBox, network enumeration, exploitation writeups, attack simulation</p>
-      </div>
-      <div class="pillar">
-        <span class="pillar-icon">[ 03 ]</span>
-        <h3>DevSecOps</h3>
-        <p>CI/CD pipeline instrumentation, DAST, SAST, secrets detection, SOAR automation</p>
-      </div>
-      <div class="pillar">
-        <span class="pillar-icon">[ 04 ]</span>
-        <h3>Security Tooling</h3>
-        <p>Python recon tools, port scanner, subdomain enumerator, JWT analyzer</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="projects">
-  <span class="section-label">02 / projects</span>
-  <h2 class="reveal">Selected work</h2>
-  <table class="projects-table reveal reveal-delay-1">
-    <thead>
-      <tr>
-        <th style="width:35%">Project</th>
-        <th style="width:12%">Type</th>
-        <th style="width:30%">Stack</th>
-        <th style="width:23%">Link</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <div class="proj-title">ResponseOne</div>
-          <div class="proj-desc">DevSecOps pipeline and SOAR automation platform. Instruments Juice Shop with SAST, DAST, dependency scanning, and secrets detection on every commit. Findings POST automatically to Shuffle Cloud. Pipeline blocks on medium or higher severity findings.</div>
-        </td>
-        <td><span class="proj-type">DevSecOps</span></td>
-        <td><div class="tags"><span class="tag">GitHub Actions</span><span class="tag">OWASP ZAP</span><span class="tag">Semgrep</span><span class="tag">Trivy</span><span class="tag">Gitleaks</span><span class="tag">Shuffle</span><span class="tag">Docker</span></div></td>
-        <td><a href="https://github.com/DevwithMujeeb/responseone" target="_blank" rel="noopener" class="proj-link">github.com/DevwithMujeeb/responseone</a></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="proj-title">MedCore SIEM Environment</div>
-          <div class="proj-desc">Centralized security monitoring for a simulated healthcare supply chain. Wazuh 4.14.7 all-in-one deployment, AWS CloudTrail ingestion, Azure Activity Log integration, three live attack simulations with full incident response playbooks.</div>
-        </td>
-        <td><span class="proj-type">Blue Team</span></td>
-        <td><div class="tags"><span class="tag">Wazuh</span><span class="tag">AWS CloudTrail</span><span class="tag">Azure</span><span class="tag">ZeroTier</span><span class="tag">Kali Linux</span></div></td>
-        <td><a href="https://devwithmujeeb.hashnode.dev" target="_blank" rel="noopener" class="proj-link">Read writeup</a></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="proj-title">IronGuard Endpoint Protection</div>
-          <div class="proj-desc">Endpoint protection and vulnerability management for a healthcare supply chain. Reduced critical CVEs from 7 to 0, achieved 87% patch compliance, built a Python SLA enforcement tracker with automatic severity classification.</div>
-        </td>
-        <td><span class="proj-type">Blue Team</span></td>
-        <td><div class="tags"><span class="tag">Wazuh</span><span class="tag">Action1</span><span class="tag">Python</span><span class="tag">CVSS</span></div></td>
-        <td><a href="https://www.linkedin.com/in/abdulmujeeb-uthman/" target="_blank" rel="noopener" class="proj-link">View on LinkedIn</a></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="proj-title">SecureTeam</div>
-          <div class="proj-desc">RBAC-based team management app where security is the core design constraint. Two-layer access control, JWT rotation with token version revocation, full audit logging on every privileged action.</div>
-        </td>
-        <td><span class="proj-type">Secure Dev</span></td>
-        <td><div class="tags"><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">MongoDB</span><span class="tag">React</span><span class="tag">JWT</span><span class="tag">RBAC</span></div></td>
-        <td><a href="https://github.com/DevwithMujeeb/secureteam" target="_blank" rel="noopener" class="proj-link">github.com/DevwithMujeeb/secureteam</a></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="proj-title">Vulnerable Web Lab</div>
-          <div class="proj-desc">Intentionally broken Express app covering OWASP Top 10. Each vulnerability has an exploit path and a patched version side by side. NoSQL injection, XSS, IDOR, broken auth, sensitive data exposure.</div>
-        </td>
-        <td><span class="proj-type">Security Lab</span></td>
-        <td><div class="tags"><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">MongoDB</span><span class="tag">OWASP Top 10</span></div></td>
-        <td><a href="https://github.com/DevwithMujeeb/vulnerable-web-lab" target="_blank" rel="noopener" class="proj-link">github.com/DevwithMujeeb</a></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="proj-title">Security Tools</div>
-          <div class="proj-desc">Python CLI toolkit for recon and analysis. Port scanner with service detection, subdomain enumerator with wordlist support, JWT analyzer that decodes, inspects expiry, and flags weak algorithms.</div>
-        </td>
-        <td><span class="proj-type">Tooling</span></td>
-        <td><div class="tags"><span class="tag">Python</span><span class="tag">Recon</span><span class="tag">JWT</span></div></td>
-        <td><a href="https://github.com/DevwithMujeeb/security-tools" target="_blank" rel="noopener" class="proj-link">github.com/DevwithMujeeb</a></td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-
-<section id="focus">
-  <span class="section-label">03 / current focus</span>
-  <h2 class="reveal">What I am building toward</h2>
-  <div class="focus-grid">
-    <ul class="focus-list reveal">
-      <li><strong>SOC Analyst and Security Engineer roles</strong> within 6 to 12 months</li>
-      <li><strong>HackTheBox</strong> active labs, machine writeups, CJCA certification track</li>
-      <li><strong>Cloud security</strong> AWS and Azure log ingestion, threat detection at scale</li>
-      <li><strong>Network security</strong> moving from blue team operations into network-layer offense</li>
-      <li><strong>Public documentation</strong> every project writeup on Hashnode and GitHub</li>
-    </ul>
-    <div class="reveal reveal-delay-2">
-      <p style="font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem;font-family:var(--font-mono)">HackTheBox Academy progress</p>
-      <div class="progress-items">
-        <div class="progress-item">
-          <div class="progress-label"><span>Linux Fundamentals</span><span>Complete</span></div>
-          <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-        </div>
-        <div class="progress-item">
-          <div class="progress-label"><span>Web Requests</span><span>Complete</span></div>
-          <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-        </div>
-        <div class="progress-item">
-          <div class="progress-label"><span>Networking Fundamentals</span><span>In progress</span></div>
-          <div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div>
-        </div>
-        <div class="progress-item">
-          <div class="progress-label"><span>CTF Writeups</span><span>Active</span></div>
-          <div class="progress-bar"><div class="progress-fill" style="width:30%"></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <span class="footer-note">Abdulmujeeb Uthman — Ibadan, Nigeria — open to security roles</span>
-  <div class="footer-links">
-    <a href="https://github.com/DevwithMujeeb" target="_blank" rel="noopener">GitHub</a>
-    <a href="https://www.linkedin.com/in/abdulmujeeb-uthman/" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="https://x.com/JeebExplains" target="_blank" rel="noopener">X</a>
-    <a href="https://devwithmujeeb.hashnode.dev" target="_blank" rel="noopener">Hashnode</a>
-    <a href="https://medium.com/@Devwithmujeeb" target="_blank" rel="noopener">Medium</a>
-  </div>
-</footer>
-
-<script>
-  const revealEls = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Abdulmujeeb Uthman — Security Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #0e0e0f;
+        --surface: #16181c;
+        --surface2: #1e2028;
+        --amber: #f5a623;
+        --amber-dim: rgba(245, 166, 35, 0.12);
+        --blue: #3b82f6;
+        --text: #e8e8e8;
+        --muted: #6b7280;
+        --border: rgba(255, 255, 255, 0.07);
+        --font-head: "Space Grotesk", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
       }
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-  revealEls.forEach(el => observer.observe(el));
-</script>
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-head);
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
 
-</body>
+      nav {
+        position: fixed;
+        top: env(safe-area-inset-top, 0px);
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.25rem 2rem;
+        background: rgba(14, 14, 15, 0.88);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-logo {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--amber);
+      }
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+      .nav-links a {
+        font-size: 0.875rem;
+        color: var(--muted);
+        text-decoration: none;
+        position: relative;
+        padding-bottom: 2px;
+        transition: color 0.2s;
+      }
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--amber);
+        transition: width 0.25s ease;
+      }
+      .nav-links a:hover {
+        color: var(--text);
+      }
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 8rem 2rem 4rem;
+        max-width: 1100px;
+        margin: 0 auto;
+        gap: 3rem;
+      }
+      .hero-inner {
+        max-width: 580px;
+        flex-shrink: 0;
+      }
+      .hero-visual {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        min-width: 0;
+      }
+      .osc-wrap {
+        width: 100%;
+        max-width: 340px;
+        aspect-ratio: 4/3;
+        position: relative;
+      }
+      .osc-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      @media (max-width: 900px) {
+        .hero-visual {
+          display: none;
+        }
+        .hero-inner {
+          max-width: 720px;
+        }
+      }
+      .hero-eyebrow {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--amber);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--amber);
+        animation: pulse 2s ease infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+      .hero h1 {
+        font-size: clamp(2.4rem, 5vw, 4rem);
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        margin-bottom: 1.5rem;
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      .hero h1 span {
+        color: var(--amber);
+      }
+      .hero-sub {
+        font-size: 1.05rem;
+        color: var(--muted);
+        max-width: 560px;
+        line-height: 1.7;
+        margin-bottom: 2rem;
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      .hero-location {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-bottom: 2.5rem;
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      .cursor {
+        display: inline-block;
+        width: 8px;
+        height: 0.9em;
+        background: var(--amber);
+        vertical-align: middle;
+        margin-left: 4px;
+        animation: blink 1s step-end infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+      .hero-actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      .btn {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        transition:
+          transform 0.18s,
+          box-shadow 0.18s;
+        display: inline-block;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+      .btn-primary {
+        background: var(--amber);
+        color: #0e0e0f;
+        font-weight: 600;
+      }
+      .btn-primary:hover {
+        box-shadow: 0 6px 24px rgba(245, 166, 35, 0.3);
+      }
+      .btn-secondary {
+        border: 1px solid var(--border);
+        color: var(--text);
+        background: transparent;
+      }
+      .btn-secondary:hover {
+        border-color: var(--amber);
+        box-shadow: 0 6px 24px rgba(245, 166, 35, 0.1);
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .animate {
+          animation: risein 0.6s ease forwards;
+        }
+        @keyframes risein {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .d1 {
+          animation-delay: 0.1s;
+        }
+        .d2 {
+          animation-delay: 0.25s;
+        }
+        .d3 {
+          animation-delay: 0.4s;
+        }
+        .d4 {
+          animation-delay: 0.52s;
+        }
+        .d5 {
+          animation-delay: 0.65s;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .hero-eyebrow,
+        .hero h1,
+        .hero-sub,
+        .hero-location,
+        .hero-actions {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal-delay-1.visible {
+        transition-delay: 0.08s;
+      }
+      .reveal-delay-2.visible {
+        transition-delay: 0.16s;
+      }
+      .reveal-delay-3.visible {
+        transition-delay: 0.24s;
+      }
+      .reveal-delay-4.visible {
+        transition-delay: 0.32s;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .reveal {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+      }
+
+      .terminal {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 1.25rem 1.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        line-height: 1.9;
+        color: var(--muted);
+        margin: 4rem auto;
+        max-width: 1100px;
+        overflow-x: auto;
+      }
+      .terminal .prompt {
+        color: var(--amber);
+      }
+      .terminal .output {
+        color: #4ade80;
+      }
+      .terminal .comment {
+        color: #4b5563;
+      }
+
+      section {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 5rem 2rem;
+        border-top: 1px solid var(--border);
+      }
+      .section-label {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--amber);
+        margin-bottom: 2.5rem;
+        display: block;
+      }
+      h2 {
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: start;
+      }
+      .about-text p {
+        color: var(--muted);
+        line-height: 1.8;
+        margin-bottom: 1rem;
+        max-width: 480px;
+      }
+      .about-text p strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .about-pillars {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+      }
+      .pillar {
+        background: var(--surface);
+        padding: 1.5rem;
+        transition: background 0.2s;
+      }
+      .pillar:hover {
+        background: var(--surface2);
+      }
+      .pillar-icon {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        color: var(--amber);
+        margin-bottom: 0.75rem;
+        display: block;
+      }
+      .pillar h3 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+      }
+      .pillar p {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .projects-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .projects-table thead tr {
+        border-bottom: 1px solid var(--border);
+      }
+      .projects-table th {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--muted);
+        text-align: left;
+        padding: 0 1rem 1rem 0;
+        font-weight: 400;
+      }
+      .projects-table tbody tr {
+        border-bottom: 1px solid var(--border);
+        transition: background 0.15s;
+      }
+      .projects-table tbody tr:hover {
+        background: var(--surface);
+      }
+      .projects-table tbody tr:hover .proj-title {
+        color: var(--amber);
+        text-decoration: underline;
+      }
+      .projects-table tbody tr:hover .tag {
+        background: var(--amber-dim);
+        color: var(--amber);
+      }
+      .projects-table td {
+        padding: 1.25rem 1rem 1.25rem 0;
+        vertical-align: top;
+      }
+      .proj-title {
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0.35rem;
+        transition: color 0.15s;
+      }
+      .proj-title a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .proj-desc {
+        font-size: 0.83rem;
+        color: var(--muted);
+        line-height: 1.6;
+        max-width: 380px;
+      }
+      .proj-type {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .tag {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        padding: 0.2rem 0.55rem;
+        border-radius: 3px;
+        background: var(--surface2);
+        color: var(--muted);
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .proj-link {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--blue);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .proj-link:hover {
+        text-decoration: underline;
+      }
+
+      .focus-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+      }
+      .focus-list {
+        list-style: none;
+      }
+      .focus-list li {
+        padding: 0.9rem 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.9rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .focus-list li::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--amber);
+        flex-shrink: 0;
+      }
+      .focus-list li strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .progress-items {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .progress-label {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-bottom: 0.4rem;
+        display: flex;
+        justify-content: space-between;
+      }
+      .progress-label span:last-child {
+        color: var(--amber);
+      }
+      .progress-bar {
+        height: 3px;
+        background: var(--surface2);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: var(--amber);
+        border-radius: 2px;
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 3rem 2rem;
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+      .footer-note {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+      .footer-links {
+        display: flex;
+        gap: 1.5rem;
+      }
+      .footer-links a {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--muted);
+        text-decoration: none;
+        position: relative;
+        padding-bottom: 2px;
+      }
+      .footer-links a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--amber);
+        transition: width 0.2s ease;
+      }
+      .footer-links a:hover {
+        color: var(--text);
+      }
+      .footer-links a:hover::after {
+        width: 100%;
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          padding: 1rem 1.25rem;
+        }
+        .nav-links {
+          gap: 1.25rem;
+        }
+        .hero {
+          padding: 7rem 1.25rem 3rem;
+        }
+        .about-grid {
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+        }
+        .focus-grid {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+        section {
+          padding: 3.5rem 1.25rem;
+        }
+        .terminal {
+          margin: 2rem 1.25rem;
+        }
+        .projects-table thead {
+          display: none;
+        }
+        .projects-table td {
+          display: block;
+          padding: 0.4rem 0;
+        }
+        .projects-table tbody tr {
+          display: block;
+          padding: 1.25rem 0;
+        }
+        footer {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .proj-type {
+          display: none;
+        }
+      }
+      @media (max-width: 480px) {
+        .nav-links li:nth-child(3),
+        .nav-links li:nth-child(4) {
+          display: none;
+        }
+        .about-pillars {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <span class="nav-logo">abdulmujeeb.uthman</span>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#focus">Focus</a></li>
+        <li>
+          <a
+            href="https://github.com/DevwithMujeeb"
+            target="_blank"
+            rel="noopener"
+            >GitHub</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="hero-eyebrow animate d1">
+          <span class="dot"></span>
+          Security Engineer in the making
+        </div>
+        <h1 class="animate d2">
+          Building systems.<br />
+          <span>Breaking them</span> to understand<br />
+          how to harden the next one.
+        </h1>
+        <p class="hero-sub animate d3">
+          Blue team operations by day, HackTheBox by night. I deploy SIEMs,
+          instrument CI/CD pipelines with security gates, and document
+          everything in public so the work speaks for itself.
+        </p>
+        <p class="hero-location animate d4">
+          Ibadan, Nigeria<span class="cursor"></span>
+        </p>
+        <div class="hero-actions animate d5">
+          <a
+            href="https://github.com/DevwithMujeeb"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-primary"
+            >GitHub</a
+          >
+          <a
+            href="https://www.linkedin.com/in/abdulmujeeb-uthman/"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-secondary"
+            >LinkedIn</a
+          >
+          <a
+            href="https://devwithmujeeb.hashnode.dev"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-secondary"
+            >Writing</a
+          >
+          <a href="resume.pdf" download class="btn btn-primary">Resume</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="osc-wrap">
+          <canvas class="osc-canvas" id="osc"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <div>
+        <span class="comment"
+          ># Expadox Lab Cohort 3 — live attack detection evidence</span
+        >
+      </div>
+      <div>
+        <span class="prompt">cyber-vortex@wazuh-server:~$</span> tail -f
+        /var/ossec/logs/alerts/alerts.json | grep "SSH"
+      </div>
+      <div>
+        <span class="output"
+          >{"rule":{"id":"5710","description":"SSH authentication
+          failed","level":5},"agent":{"name":"40RT3X"}}</span
+        >
+      </div>
+      <div>
+        <span class="output"
+          >{"rule":{"id":"5503","description":"SSH Brute Force
+          attempt","level":10},"data":{"srcipt":"10.153.239.40"}}</span
+        >
+      </div>
+      <div>
+        <span class="prompt">cyber-vortex@wazuh-server:~$</span> cat
+        zap-report.json | jq '.site[0].alerts[] | {name:.alert, risk:.riskdesc}'
+      </div>
+      <div>
+        <span class="output"
+          >{"name":"Content Security Policy Header Not Set","risk":"Medium
+          (High)"}</span
+        >
+      </div>
+      <div>
+        <span class="output"
+          >{"name":"Cross-Domain Misconfiguration","risk":"Medium
+          (Medium)"}</span
+        >
+      </div>
+      <div>
+        <span class="prompt">cyber-vortex@wazuh-server:~$</span>
+        <span class="comment"
+          ># CRITICAL: Pipeline blocked. 2 medium or higher severity findings
+          detected.</span
+        >
+      </div>
+    </div>
+
+    <section id="about">
+      <span class="section-label">01 / about</span>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <h2>Security engineering across both sides of the fence</h2>
+          <p>
+            I build blue team environments and think like an attacker while
+            doing it. My background in backend engineering means I understand
+            how systems are assembled, which makes it easier to reason about how
+            they fail.
+          </p>
+          <p>
+            Currently working through <strong>Expadox Lab Cohort 3</strong>,
+            where I have deployed production-grade SIEM infrastructure,
+            integrated AWS and Azure cloud log ingestion, built a DevSecOps
+            pipeline with automated SOAR response, and led a team across
+            multiple projects.
+          </p>
+          <p>
+            My Electrical and Electronics Engineering degree at the University
+            of Ibadan gave me a habit of tracing systems to their failure points
+            before considering them understood. That instinct transfers cleanly
+            to security.
+          </p>
+        </div>
+        <div class="about-pillars reveal reveal-delay-2">
+          <div class="pillar">
+            <span class="pillar-icon">[ 01 ]</span>
+            <h3>Blue Team Operations</h3>
+            <p>
+              SIEM deployment, threat detection, cloud log ingestion, incident
+              response playbooks
+            </p>
+          </div>
+          <div class="pillar">
+            <span class="pillar-icon">[ 02 ]</span>
+            <h3>Offensive Security</h3>
+            <p>
+              HackTheBox, network enumeration, exploitation writeups, attack
+              simulation
+            </p>
+          </div>
+          <div class="pillar">
+            <span class="pillar-icon">[ 03 ]</span>
+            <h3>DevSecOps</h3>
+            <p>
+              CI/CD pipeline instrumentation, DAST, SAST, secrets detection,
+              SOAR automation
+            </p>
+          </div>
+          <div class="pillar">
+            <span class="pillar-icon">[ 04 ]</span>
+            <h3>Security Tooling</h3>
+            <p>
+              Python recon tools, port scanner, subdomain enumerator, JWT
+              analyzer
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <span class="section-label">02 / projects</span>
+      <h2 class="reveal">Selected work</h2>
+      <table class="projects-table reveal reveal-delay-1">
+        <thead>
+          <tr>
+            <th style="width: 35%">Project</th>
+            <th style="width: 12%">Type</th>
+            <th style="width: 30%">Stack</th>
+            <th style="width: 23%">Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="proj-title">ResponseOne</div>
+              <div class="proj-desc">
+                DevSecOps pipeline and SOAR automation platform. Instruments
+                Juice Shop with SAST, DAST, dependency scanning, and secrets
+                detection on every commit. Findings POST automatically to
+                Shuffle Cloud. Pipeline blocks on medium or higher severity
+                findings.
+              </div>
+            </td>
+            <td><span class="proj-type">DevSecOps</span></td>
+            <td>
+              <div class="tags">
+                <span class="tag">GitHub Actions</span
+                ><span class="tag">OWASP ZAP</span
+                ><span class="tag">Semgrep</span><span class="tag">Trivy</span
+                ><span class="tag">Gitleaks</span
+                ><span class="tag">Shuffle</span><span class="tag">Docker</span>
+              </div>
+            </td>
+            <td>
+              <a
+                href="https://github.com/DevwithMujeeb/responseone"
+                target="_blank"
+                rel="noopener"
+                class="proj-link"
+                >github.com/DevwithMujeeb/responseone</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="proj-title">MedCore SIEM Environment</div>
+              <div class="proj-desc">
+                Centralized security monitoring for a simulated healthcare
+                supply chain. Wazuh 4.14.7 all-in-one deployment, AWS CloudTrail
+                ingestion, Azure Activity Log integration, three live attack
+                simulations with full incident response playbooks.
+              </div>
+            </td>
+            <td><span class="proj-type">Blue Team</span></td>
+            <td>
+              <div class="tags">
+                <span class="tag">Wazuh</span
+                ><span class="tag">AWS CloudTrail</span
+                ><span class="tag">Azure</span><span class="tag">ZeroTier</span
+                ><span class="tag">Kali Linux</span>
+              </div>
+            </td>
+            <td>
+              <a
+                href="https://devwithmujeeb.hashnode.dev"
+                target="_blank"
+                rel="noopener"
+                class="proj-link"
+                >Read writeup</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="proj-title">IronGuard Endpoint Protection</div>
+              <div class="proj-desc">
+                Endpoint protection and vulnerability management for a
+                healthcare supply chain. Reduced critical CVEs from 7 to 0,
+                achieved 87% patch compliance, built a Python SLA enforcement
+                tracker with automatic severity classification.
+              </div>
+            </td>
+            <td><span class="proj-type">Blue Team</span></td>
+            <td>
+              <div class="tags">
+                <span class="tag">Wazuh</span><span class="tag">Action1</span
+                ><span class="tag">Python</span><span class="tag">CVSS</span>
+              </div>
+            </td>
+            <td>
+              <a
+                href="https://www.linkedin.com/in/abdulmujeeb-uthman/"
+                target="_blank"
+                rel="noopener"
+                class="proj-link"
+                >View on LinkedIn</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="proj-title">SecureTeam</div>
+              <div class="proj-desc">
+                RBAC-based team management app where security is the core design
+                constraint. Two-layer access control, JWT rotation with token
+                version revocation, full audit logging on every privileged
+                action.
+              </div>
+            </td>
+            <td><span class="proj-type">Secure Dev</span></td>
+            <td>
+              <div class="tags">
+                <span class="tag">Node.js</span><span class="tag">Express</span
+                ><span class="tag">MongoDB</span><span class="tag">React</span
+                ><span class="tag">JWT</span><span class="tag">RBAC</span>
+              </div>
+            </td>
+            <td>
+              <a
+                href="https://github.com/DevwithMujeeb/secureteam"
+                target="_blank"
+                rel="noopener"
+                class="proj-link"
+                >github.com/DevwithMujeeb/secureteam</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="proj-title">Vulnerable Web Lab</div>
+              <div class="proj-desc">
+                Intentionally broken Express app covering OWASP Top 10. Each
+                vulnerability has an exploit path and a patched version side by
+                side. NoSQL injection, XSS, IDOR, broken auth, sensitive data
+                exposure.
+              </div>
+            </td>
+            <td><span class="proj-type">Security Lab</span></td>
+            <td>
+              <div class="tags">
+                <span class="tag">Node.js</span><span class="tag">Express</span
+                ><span class="tag">MongoDB</span
+                ><span class="tag">OWASP Top 10</span>
+              </div>
+            </td>
+            <td>
+              <a
+                href="https://github.com/DevwithMujeeb/vulnerable-web-lab"
+                target="_blank"
+                rel="noopener"
+                class="proj-link"
+                >github.com/DevwithMujeeb/vuln-lab</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="proj-title">Security Tools</div>
+              <div class="proj-desc">
+                Python CLI toolkit for recon and analysis. Port scanner with
+                service detection, subdomain enumerator with wordlist support,
+                JWT analyzer that decodes, inspects expiry, and flags weak
+                algorithms.
+              </div>
+            </td>
+            <td><span class="proj-type">Tooling</span></td>
+            <td>
+              <div class="tags">
+                <span class="tag">Python</span><span class="tag">Recon</span
+                ><span class="tag">JWT</span>
+              </div>
+            </td>
+            <td>
+              <a
+                href="https://github.com/DevwithMujeeb/security-tools"
+                target="_blank"
+                rel="noopener"
+                class="proj-link"
+                >github.com/DevwithMujeeb/sec-tools</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="focus">
+      <span class="section-label">03 / current focus</span>
+      <h2 class="reveal">What I am building toward</h2>
+      <div class="focus-grid">
+        <ul class="focus-list reveal">
+          <li>
+            <strong>SOC Analyst and Security Engineer roles</strong> within 6 to
+            12 months
+          </li>
+          <li>
+            <strong>HackTheBox</strong> active labs, machine writeups, CJCA
+            certification track
+          </li>
+          <li>
+            <strong>Cloud security</strong> AWS and Azure log ingestion, threat
+            detection at scale
+          </li>
+          <li>
+            <strong>Network security</strong> moving from blue team operations
+            into network-layer offense
+          </li>
+          <li>
+            <strong>Public documentation</strong> every project writeup on
+            Hashnode and GitHub
+          </li>
+        </ul>
+        <div class="reveal reveal-delay-2">
+          <p
+            style="
+              font-size: 0.82rem;
+              color: var(--muted);
+              margin-bottom: 1.5rem;
+              font-family: var(--font-mono);
+            ">
+            HackTheBox Academy progress
+          </p>
+          <div class="progress-items">
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Linux Fundamentals</span><span>Complete</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+              </div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Web Requests</span><span>Complete</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+              </div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Networking Fundamentals</span><span>In progress</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 55%"></div>
+              </div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>CTF Writeups</span><span>Active</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 30%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span class="footer-note"
+        >Abdulmujeeb Uthman — Ibadan, Nigeria — open to security roles</span
+      >
+      <div class="footer-links">
+        <a
+          href="https://github.com/DevwithMujeeb"
+          target="_blank"
+          rel="noopener"
+          >GitHub</a
+        >
+        <a
+          href="https://www.linkedin.com/in/abdulmujeeb-uthman/"
+          target="_blank"
+          rel="noopener"
+          >LinkedIn</a
+        >
+        <a href="https://x.com/JeebExplains" target="_blank" rel="noopener"
+          >X</a
+        >
+        <a
+          href="https://devwithmujeeb.hashnode.dev"
+          target="_blank"
+          rel="noopener"
+          >Hashnode</a
+        >
+        <a
+          href="https://medium.com/@Devwithmujeeb"
+          target="_blank"
+          rel="noopener"
+          >Medium</a
+        >
+      </div>
+    </footer>
+
+    <script>
+      // Oscilloscope scanning line
+      (function () {
+        const canvas = document.getElementById("osc");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        const AMBER = "#F5A623";
+        const AMBER_DIM = "rgba(245,166,35,0.08)";
+        const GRID = "rgba(255,255,255,0.04)";
+        const BG = "#0E0E0F";
+        let W,
+          H,
+          scanX,
+          history = [],
+          animId;
+        const COLS = 8,
+          ROWS = 6;
+        const TRAIL = 60;
+        const SPEED = 1.4;
+
+        function resize() {
+          const rect = canvas.parentElement.getBoundingClientRect();
+          W = canvas.width = rect.width;
+          H = canvas.height = rect.height;
+          scanX = 0;
+          history = [];
+        }
+
+        function drawGrid() {
+          ctx.strokeStyle = GRID;
+          ctx.lineWidth = 1;
+          for (let c = 1; c < COLS; c++) {
+            ctx.beginPath();
+            ctx.moveTo((c * W) / COLS, 0);
+            ctx.lineTo((c * W) / COLS, H);
+            ctx.stroke();
+          }
+          for (let r = 1; r < ROWS; r++) {
+            ctx.beginPath();
+            ctx.moveTo(0, (r * H) / ROWS);
+            ctx.lineTo(W, (r * H) / ROWS);
+            ctx.stroke();
+          }
+          // Crosshair center
+          ctx.strokeStyle = "rgba(245,166,35,0.06)";
+          ctx.beginPath();
+          ctx.moveTo(W / 2, 0);
+          ctx.lineTo(W / 2, H);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(0, H / 2);
+          ctx.lineTo(W, H / 2);
+          ctx.stroke();
+        }
+
+        function signal(x) {
+          // Composite waveform: sine + harmonics = realistic ECG-like security signal
+          const t = (x / W) * Math.PI * 6;
+          return (
+            Math.sin(t) * 0.28 +
+            Math.sin(t * 2.3) * 0.12 +
+            Math.sin(t * 5.1) * 0.06
+          );
+        }
+
+        function frame() {
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+            return;
+
+          ctx.fillStyle = BG;
+          ctx.fillRect(0, 0, W, H);
+          drawGrid();
+
+          // Advance scan
+          scanX = (scanX + SPEED) % W;
+          const y = H / 2 + signal(scanX) * H * 0.38;
+          history.push({ x: scanX, y });
+          if (history.length > W / SPEED + 10) history.shift();
+
+          // Erase zone ahead of scan head (phosphor fade effect)
+          ctx.fillStyle = BG;
+          ctx.fillRect(scanX + 1, 0, 32, H);
+
+          // Draw waveform trail with glow fade
+          if (history.length > 1) {
+            for (let i = 1; i < history.length; i++) {
+              const p = history[i - 1],
+                c = history[i];
+              // Skip if wrapping
+              if (Math.abs(c.x - p.x) > W / 2) continue;
+              const age = history.length - i;
+              const fade = Math.max(0, 1 - age / (history.length * 0.9));
+              ctx.strokeStyle = `rgba(245,166,35,${fade * 0.9})`;
+              ctx.lineWidth = fade > 0.6 ? 1.5 : 1;
+              ctx.shadowColor = AMBER;
+              ctx.shadowBlur = fade > 0.7 ? 6 : 0;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(c.x, c.y);
+              ctx.stroke();
+            }
+            ctx.shadowBlur = 0;
+          }
+
+          // Scan head glow dot
+          ctx.beginPath();
+          ctx.arc(scanX, y, 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = AMBER;
+          ctx.shadowColor = AMBER;
+          ctx.shadowBlur = 12;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          // Scan line (vertical amber beam)
+          const grad = ctx.createLinearGradient(scanX - 20, 0, scanX + 4, 0);
+          grad.addColorStop(0, "rgba(245,166,35,0)");
+          grad.addColorStop(1, "rgba(245,166,35,0.12)");
+          ctx.fillStyle = grad;
+          ctx.fillRect(scanX - 20, 0, 24, H);
+
+          // Corner label
+          ctx.font = "9px JetBrains Mono, monospace";
+          ctx.fillStyle = "rgba(245,166,35,0.35)";
+          ctx.fillText("LIVE", 8, 16);
+          ctx.fillStyle = "rgba(245,166,35,0.2)";
+          ctx.fillText("CH1  2V/div  10ms", 8, H - 8);
+
+          animId = requestAnimationFrame(frame);
+        }
+
+        resize();
+        new ResizeObserver(resize).observe(canvas.parentElement);
+        frame();
+      })();
+
+      const revealEls = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+      );
+      revealEls.forEach((el) => observer.observe(el));
+    </script>
+  </body>
 </html>
